@@ -1,0 +1,22 @@
+{% load static %}{% load i18n %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>
+{% trans 'Wine database site' %}
+    </title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+{% block head %}
+{% endblock %}
+
+{% block body %}
+{% for message in messages %}
+    {{ message }}
+{% endfor %}
+{% endblock %}
+</body>

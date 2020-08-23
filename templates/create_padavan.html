@@ -1,0 +1,6 @@
+{% extends "extends/base.html" %}{% load i18n %}{% load static %}
+{% block body %}
+<form method="post" data-regions-url="{% url 'main:create_padavan' %}" novalidate> <!-- necessary -->
+    {% include 'includes/uni_form.html' %}
+</form>
+{% endblock %}

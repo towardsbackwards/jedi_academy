@@ -1,0 +1,13 @@
+{% if form %}
+<form action="{{ form.process_url }}" method="{{ form.method }}" enctype="multipart/form-data">
+{% if form.method == 'POST' %}{% csrf_token %}{% endif %}
+    <div style="width: 50%; margin: auto">
+        <h3 class="h3">{{ form.form_label }}</h3>
+            {% if form.media %}{{ form.media }}{% endif %}
+
+            <p>{{ form }}</p>
+
+        <input name="q" type="submit" value="{{ form.button_label }}">
+    </div>
+</form>
+{% endif %}

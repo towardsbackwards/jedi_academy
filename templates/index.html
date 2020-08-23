@@ -1,0 +1,9 @@
+{% extends "extends/base.html" %}{% load i18n %}{% load static %}
+{% block body %}
+    <title>Welcome to Jedi Academy!</title>
+    <div class="text-center"></div>
+    </p><a href="{% url 'main:index' %}">{% trans 'Index referrer' %}</a></p>
+    <p><a href="{% url 'main:create_padavan' %}">{% trans 'Padavan form' %}</a></p>
+    <p><a href="{% url 'main:create_jedi' %}">{% trans 'Jedi form' %}</a></p>
+
+{% endblock %}
