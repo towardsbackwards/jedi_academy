@@ -3,7 +3,7 @@ from django.forms import ModelForm, BaseModelFormSet, modelformset_factory, Base
 
 from django.urls import reverse_lazy
 
-from mainapp.models import PadawanModel, JediModel, TaskModel, AnswerModel, QuestionModel
+from mainapp.models import PadawanModel, JediModel, TaskModel, AnswerModel, QuestionModel, JedisPadawan
 
 
 class PadawanCreationForm(ModelForm):
@@ -33,6 +33,11 @@ class JediCreationForm(ModelForm):
     method = 'POST'
     process_url = reverse_lazy('main:create_jedi')
 
+    def __init__(self, *args, **kwargs):
+        super(JediCreationForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
 
 class AnswerForm(forms.Form):
     form_label = 'Тестовое задание на падавана'
@@ -51,3 +56,20 @@ class AnswerForm(forms.Form):
         for k, v in self.cleaned_data.items():
             AnswerModel.objects.create(question=QuestionModel.objects.get(title=k),
                                        padawan=PadawanModel.objects.get(id=self.padawan_pk), answer=v)
+
+
+class JediChooseForm(ModelForm):
+    form_label = 'Выберите себя'
+    button_label = 'Далее'
+
+    class Meta:
+        model = JedisPadawan
+        fields = '__all__'
+
+    method = 'POST'
+    process_url = reverse_lazy('main:choose_jedi')
+
+    def __init__(self, *args, **kwargs):
+        super(JediChooseForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'

@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, CreateView, FormView
-from mainapp.forms import PadawanCreationForm, JediCreationForm, AnswerForm
-from mainapp.models import PadawanModel, JediModel, AnswerModel
+from django.views.generic import TemplateView, CreateView, FormView, ListView
+from mainapp.forms import PadawanCreationForm, JediCreationForm, AnswerForm, JediChooseForm
+from mainapp.models import PadawanModel, JediModel, AnswerModel, PlanetModel
 
 
 class IndexView(TemplateView):
@@ -40,3 +40,22 @@ class TaskView(FormView):
     def form_valid(self, form):
         form.save()
         return super(TaskView, self).form_valid(form)
+
+
+class ChooseJediView(FormView):
+    template_name = 'list.html'
+    model = JediModel
+    form_class = JediChooseForm
+
+    def get_success_url(self):
+        return reverse_lazy('main:candidates_for_jedi', kwargs={'jedi_pk': self.request.POST['jedi']})
+
+
+class CandidatesView(ListView):
+    template_name = 'list2.html'
+    model = PadawanModel
+
+    def get_queryset(self):
+        planet = get_object_or_404(JediModel, pk=self.kwargs['jedi_pk']).planet_id
+        return PadawanModel.objects.filter(planet_id=planet)
+

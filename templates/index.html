@@ -1,10 +1,12 @@
 {% extends "extends/base.html" %}{% load i18n %}{% load static %}
+{% block head %}
+{% endblock %}
 {% block body %}
     <title>Welcome to Jedi Academy!</title>
     <div class="text-center">
     </p><a href="{% url 'main:index' %}">{% trans 'Главная страница' %}</a></p>
     <p><a href="{% url 'main:create_padawan' %}">{% trans 'Для кандидатов' %}</a></p>
-    <p><a href="{% url 'main:create_jedi' %}">{% trans 'Для Джедаев' %}</a></p>
-{#    <p><a href="{% url 'main:task' participant_id %}">{% trans 'Задание для кандидатов' %}</a></p>#}
+{#    <p><a href="{% url 'main:create_jedi' %}">{% trans 'Для Джедаев' %}</a></p>#}
+    <p><a href="{% url 'main:choose_jedi' %}">{% trans 'Выбрать своего падавана...' %}</a></p>
     </div>
 {% endblock %}

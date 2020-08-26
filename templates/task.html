@@ -1,7 +1,5 @@
 {% extends "extends/base.html" %}{% load i18n %}{% load static %}
 {% block body %}
-<a href="{{ request.META.HTTP_REFERER }}">{% trans 'Назад' %}</a>
-<a href="{% url 'main:index' %}">{% trans 'На главную' %}</a>
 {% csrf_token %}
     {% include 'includes/uni_form.html' %}
     {{ object }}

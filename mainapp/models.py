@@ -43,6 +43,7 @@ class QuestionModel(models.Model):
 
 class PadawanModel(models.Model):
     """Модель кандидата в Падаваны"""
+
     class Meta:
         verbose_name = _("Кандидат")
         verbose_name_plural = _("Кандидаты")
@@ -60,6 +61,7 @@ class PadawanModel(models.Model):
 
 class JediModel(models.Model):
     """Модель Джедая"""
+
     class Meta:
         verbose_name = _("Джедай")
         verbose_name_plural = _("Джедаи")
@@ -81,3 +83,8 @@ class AnswerModel(models.Model):
     answer = models.TextField(_('Текст ответа'), max_length=1024, blank=False, null=False)
     padawan = models.ForeignKey(PadawanModel, verbose_name=_('Отвечавший падаван'),
                                 on_delete=models.CASCADE, blank=False, null=False)
+
+
+class JedisPadawan(models.Model):
+    jedi = models.ForeignKey(JediModel, verbose_name=_('Джедай'),
+                             on_delete=models.CASCADE, blank=False, null=False)
