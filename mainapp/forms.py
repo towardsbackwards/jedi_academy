@@ -9,15 +9,12 @@ from mainapp.models import PadawanModel, JediModel, TaskModel, AnswerModel, Ques
 class PadawanCreationForm(ModelForm):
     form_label = 'Анкета юного падавана'
     button_label = 'Далее'
+    method = 'POST'
+    process_url = reverse_lazy('main:create_padawan')  # - куда отправляются post-данные
 
     class Meta:
         model = PadawanModel
         fields = '__all__'
-
-
-    method = 'POST'
-    # process_url (form action=) - куда отправляются post-данные
-    process_url = reverse_lazy('main:create_padawan')
 
     def __init__(self, *args, **kwargs):
         super(PadawanCreationForm, self).__init__(*args, **kwargs)
@@ -37,41 +34,20 @@ class JediCreationForm(ModelForm):
     process_url = reverse_lazy('main:create_jedi')
 
 
-# class TaskForm(ModelForm):
-#     form_label = 'Тестовое задание на падавана'
-#     button_label = 'Отправить ответы'
-#
-#     class Meta:
-#         model = TaskModel
-#         fields = '__all__'
-#         exclude = ['title', 'unique_code']
-#
-#     method = 'POST'
-#     process_url = reverse_lazy('main:create_padawan')
-#
-#     def __init__(self, *args, **kwargs):
-#         super(TaskForm, self).__init__(*args, **kwargs)
-#         for field_name, field in self.fields.items():
-#             field.widget.attrs['class'] = 'form-control'
-
-
 class AnswerForm(forms.Form):
-
     form_label = 'Тестовое задание на падавана'
     button_label = 'Отправить ответы'
     method = 'POST'
-    process_url = reverse_lazy('main:index')
 
     def __init__(self, *args, **kwargs):
-        """KWARGS ТУТ!
-        name
-        surname
-        age
-        planet
-        email"""
-        super(AnswerForm, self).__init__(*args, **kwargs)
         questions = QuestionModel.objects.all()
-        print(kwargs)
+        self.padawan_pk = kwargs.pop('padawan_pk', None)
+        super(AnswerForm, self).__init__(*args, **kwargs)
         for question in questions:
             self.fields[question.title] = forms.CharField(label=question.question, required=False)
             self.fields[question.title].widget.attrs['class'] = 'form-control'
+
+    def save(self):
+        for k, v in self.cleaned_data.items():
+            AnswerModel.objects.create(question=QuestionModel.objects.get(title=k),
+                                       padawan=PadawanModel.objects.get(id=self.padawan_pk), answer=v)

@@ -42,8 +42,7 @@ class QuestionModel(models.Model):
 
 
 class PadawanModel(models.Model):
-    """Модель кандидата в Джедаи"""
-
+    """Модель кандидата в Падаваны"""
     class Meta:
         verbose_name = _("Кандидат")
         verbose_name_plural = _("Кандидаты")
@@ -60,8 +59,7 @@ class PadawanModel(models.Model):
 
 
 class JediModel(models.Model):
-    """Модель кандидата в Джедаи"""
-
+    """Модель Джедая"""
     class Meta:
         verbose_name = _("Джедай")
         verbose_name_plural = _("Джедаи")
