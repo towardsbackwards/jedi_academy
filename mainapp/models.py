@@ -87,4 +87,6 @@ class AnswerModel(models.Model):
 
 class JedisPadawan(models.Model):
     jedi = models.ForeignKey(JediModel, verbose_name=_('Джедай'),
-                             on_delete=models.CASCADE, blank=False, null=False)
+                             on_delete=models.CASCADE, blank=True, null=True)
+    padawan = models.ForeignKey(PadawanModel, verbose_name=_('Падаван джедая'),
+                                on_delete=models.CASCADE, blank=True, null=True)

@@ -64,7 +64,7 @@ class JediChooseForm(ModelForm):
 
     class Meta:
         model = JedisPadawan
-        fields = '__all__'
+        fields = ('jedi',)
 
     method = 'POST'
     process_url = reverse_lazy('main:choose_jedi')

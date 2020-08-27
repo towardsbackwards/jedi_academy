@@ -1,15 +1,16 @@
 {% extends "extends/base.html" %}{% load i18n %}{% load static %}
 {% block body %}
             <h1 class="text-center">Кандидаты с Вашей планеты:</h1>
-{% for candidat in object_list %}
+{% for candidate in object_list %}
     <div style="width: 50%; margin: auto; background-color: azure; border: aquamarine 1px solid">
-    <h4>{{ candidat }}</h4>
-        {% if candidat.answermodel_set.first  %}
+    <h4>{{ candidate }}</h4>
+        {% if candidate.answermodel_set.first  %}
             <p>Кандидат дал ответы на вопросы:</p>
-            {% for answer in candidat.answermodel_set.all %}
+            {% for answer in candidate.answermodel_set.all %}
        <strong>{{ forloop.counter }}) {{ answer.question.question }}</strong><br>
         {{ answer.answer }}<br><br>
             {% endfor %}
+            <a href="{% url 'main:take_padawan' jedi_pk candidate.pk %}">{% trans 'Взять на обучение!' %}</a>
         {% endif %}
     </div>
     <br>
