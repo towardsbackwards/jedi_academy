@@ -1,1 +1,1 @@
-web: gunicorn project.wsgi:application --log-file=-
+web: gunicorn jedi_academy.wsgi:application --log-file=-
