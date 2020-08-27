@@ -11,6 +11,8 @@
         {{ answer.answer }}<br><br>
             {% endfor %}
             <a href="{% url 'main:take_padawan' jedi_pk candidate.pk %}">{% trans 'Взять на обучение!' %}</a>
+        {% else %}
+        <p>Кандидат зарегистрировался, но не ответил на вопросы...</p>
         {% endif %}
     </div>
     <br>

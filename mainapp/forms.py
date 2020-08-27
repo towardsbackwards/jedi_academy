@@ -63,7 +63,7 @@ class AnswerForm(forms.Form):
 
 class JediChooseForm(ModelForm):
     """Форма выбора Джедая перед выбором падаванов"""
-    form_label = 'Выберите себя'
+    form_label = 'Выберите Джедая'
     button_label = 'Далее'
 
     class Meta:
