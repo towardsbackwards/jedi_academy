@@ -118,3 +118,18 @@ def add_padawan(request, jedi_pk, padawan_pk):
     JedisPadawan.objects.create(jedi_id=jedi_pk, padawan_id=padawan_pk)
     send_chose_mail(padawan, jedi)
     return render(request, 'candidates_list.html', msg)
+
+
+class JediListView(ListView):
+    """Класс рендера списков Джедаев"""
+    model = JediModel
+    template_name = 'jedi_list.html'
+    popular_jedis = {}
+    for jedi in JediModel.objects.all():
+        if len(jedi.jedispadawan_set.all()) > 1:
+            popular_jedis[jedi] = jedi.jedispadawan_set.all()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['popular_jedis'] = self.popular_jedis
+        return context

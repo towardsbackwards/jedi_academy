@@ -1,0 +1,25 @@
+{% extends "extends/base.html" %}{% load i18n %}{% load static %}
+{% block body %}
+            <h1 class="text-center">Наши Джедаи:</h1>
+{% for jedi in object_list %}
+    <div class="candidate_block">
+    <h4>{{ jedi }}</h4>
+        {% if jedi.jedispadawan_set  %}
+            <p>Падаваны Джедая:</p>
+            {% for padawan in jedi.jedispadawan_set.all %}
+       <strong>{{ forloop.counter }}) {{ padawan.padawan.name }} {{ padawan.padawan.surname }}</strong><br>
+                Возраст падавана - {{ padawan.padawan.age }}, планета {{ padawan.padawan.planet }}
+        {{ answer.answer }}<br><br>
+            {% endfor %}
+
+        {% endif %}
+    </div>
+    <br>
+{% endfor %}
+    <h1 class="text-center">Популярные Джедаи:</h1>
+    {% if popular_jedis %}
+        {% for popular_jedi in popular_jedis %}
+        <p class="text-center">{{ popular_jedi }} - {{ popular_jedi.jedispadawan_set.all|length }} учеников!</p>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

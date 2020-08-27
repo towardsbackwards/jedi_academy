@@ -2,7 +2,7 @@
 {% block body %}
             <h1 class="text-center">Кандидаты с Вашей планеты:</h1>
 {% for candidate in object_list %}
-    <div style="width: 50%; margin: auto; background-color: azure; border: aquamarine 1px solid">
+    <div class="candidate_block">
     <h4>{{ candidate }}</h4>
         {% if candidate.answermodel_set.first  %}
             <p>Кандидат дал ответы на вопросы:</p>
