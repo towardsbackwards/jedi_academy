@@ -86,6 +86,7 @@ class AnswerModel(models.Model):
 
 
 class JedisPadawan(models.Model):
+    """Модель для хранения связки Джедай-падаван"""
     jedi = models.ForeignKey(JediModel, verbose_name=_('Джедай'),
                              on_delete=models.CASCADE, blank=True, null=True)
     padawan = models.ForeignKey(PadawanModel, verbose_name=_('Падаван джедая'),

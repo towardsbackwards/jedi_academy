@@ -7,6 +7,7 @@ from mainapp.models import PadawanModel, JediModel, TaskModel, AnswerModel, Ques
 
 
 class PadawanCreationForm(ModelForm):
+    """Форма создания кандидата"""
     form_label = 'Анкета юного падавана'
     button_label = 'Далее'
     method = 'POST'
@@ -23,6 +24,7 @@ class PadawanCreationForm(ModelForm):
 
 
 class JediCreationForm(ModelForm):
+    """Форма создания Джедая"""
     form_label = 'Анкета опытного джедая'
     button_label = 'Сохранить'
 
@@ -40,6 +42,7 @@ class JediCreationForm(ModelForm):
 
 
 class AnswerForm(forms.Form):
+    """Форма с вопросами для кандидата"""
     form_label = 'Тестовое задание на падавана'
     button_label = 'Отправить ответы'
     method = 'POST'
@@ -59,6 +62,7 @@ class AnswerForm(forms.Form):
 
 
 class JediChooseForm(ModelForm):
+    """Форма выбора Джедая перед выбором падаванов"""
     form_label = 'Выберите себя'
     button_label = 'Далее'
 
