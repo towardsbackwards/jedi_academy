@@ -1,9 +1,16 @@
-from django.http import HttpResponseRedirect
+from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, FormView, ListView
+from jedi_academy import settings
 from mainapp.forms import PadawanCreationForm, JediCreationForm, AnswerForm, JediChooseForm
-from mainapp.models import PadawanModel, JediModel, AnswerModel, PlanetModel, JedisPadawan
+from mainapp.models import PadawanModel, JediModel, AnswerModel, JedisPadawan
+
+
+def send_chose_mail(padawan, jedi):
+    title = f'Поздравляем, {padawan}! Вас выбрал Джедай!'
+    message = f'О, какое счастье! Теперь вы сможете учиться у великого Джедая {jedi} на портале "{settings.SITE_NAME}"!'
+    return send_mail(title, message, settings.EMAIL_HOST_USER, [padawan.email], fail_silently=False)
 
 
 class IndexView(TemplateView):
@@ -67,12 +74,39 @@ class CandidatesView(ListView):
 
 
 def add_padawan(request, jedi_pk, padawan_pk):
-    padawan = get_object_or_404(PadawanModel, pk=padawan_pk)
-    padawan_exists = JedisPadawan.objects.filter(jedi_id=jedi_pk, padawan_id=padawan_pk)
+    padawan_count = JedisPadawan.objects.filter(jedi_id=jedi_pk, padawan_id=padawan_pk)
+    padawan_exists_another_jedi = JedisPadawan.objects.filter(padawan_id=padawan_pk).exclude(jedi_id=jedi_pk)
 
-    if padawan_exists:
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    else:
-        # сюда добавить страницу "вы (ДЖЕДАЙ) выбрали (КАНДИДАТ) в падаваны!
-        JedisPadawan.objects.create(jedi_id=jedi_pk, padawan_id=padawan_pk)
-        return render(request, 'index.html')
+    if padawan_count and len(padawan_count) < 3:
+        # Если этот падаван уже числится учеником у выбранного Джедая
+        msg = {
+            'msg': 'Выбранный Вами кандидат уже учится у Вас!',
+        }
+        return render(request, 'candidates_list.html', msg)
+    elif padawan_exists_another_jedi:
+        # Если этот падаван уже числится учеником у другого Джедая
+        another_jedi = JedisPadawan.objects.get(padawan_id=padawan_pk).jedi
+        msg = {
+            'msg': f'Выбранный Вами кандидат уже учится у другого Джедая '
+                         f'(у {another_jedi.name} {another_jedi.surname})!',
+        }
+        return render(request, 'candidates_list.html', msg)
+    # условие ">" - для захвата ошибок с "перескоком" числа,
+    # чтобы условие ограничения набора не отключилось
+    # в случае, если по какой-то причине у Джедая уже будет больше
+    # 3 падаванов (например, по личному решению администратора)
+    elif len(padawan_count) >= 3:
+        msg = {
+            'msg': 'Максимальное количество падаванов у одного Джедая - 3. К сожалению, вы уже набрали максимально '
+                   'возможное число учеников.',
+        }
+        return render(request, 'candidates_list.html', msg)
+
+    padawan = PadawanModel.objects.get(id=padawan_pk)
+    jedi = JediModel.objects.get(id=jedi_pk)
+    msg = {
+        'msg': f'Поздравляем! Вы выбрали {padawan}! Да прибудет с Вами сила и терпение!',
+    }
+    JedisPadawan.objects.create(jedi_id=jedi_pk, padawan_id=padawan_pk)
+    send_chose_mail(padawan, jedi)
+    return render(request, 'candidates_list.html', msg)

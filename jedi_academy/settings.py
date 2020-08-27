@@ -126,3 +126,10 @@ MEDIA = 'media'
 MEDIA_URL = f'/{MEDIA}/'
 MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA)
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale'), ]
+
+SITE_NAME = 'Школа обучения Силе'
+EMAIL_HOST_USER, EMAIL_HOST_PASSWORD = None, None
+# Для сохранения писем в файлы:
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'tmp/email-messages/'
+
